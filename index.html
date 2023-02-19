@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ChatGPT API Search and Conversion Tool</title>
+  </head>
+  <body>
+    <h1>ChatGPT API Search and Conversion Tool</h1>
+
+    <form onsubmit="return search()">
+      <label for="query">Search query:</label>
+      <input type="text" id="query" name="query">
+      <button type="submit">Search</button>
+    </form>
+
+    <hr>
+
+    <h2>Results:</h2>
+    <ul id="results"></ul>
+
+    <hr>
+
+    <h2>Convert Result to File</h2>
+    <label for="file-type">File Type:</label>
+    <select id="file-type" name="file-type">
+      <option value="txt">Text</option>
+      <option value="json">JSON</option>
+      <option value="xml">XML</option>
+    </select>
+    <button onclick="convertResult()">Convert to File</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      function search() {
+        var query = $("#query").val();
+        $.ajax({
+          url: "http://api.openai.com/v1/engines/davinci-codex/search",
+          headers: { "Authorization": "Bearer YOUR_API_KEY" },
+          method: "POST",
+          data: JSON.stringify({
+            "model": "davinci-codex",
+            "prompt": query,
+            "max_tokens": 150,
+            "n": 1,
+            "stop": "."
+          }),
+          dataType: "json",
+          success: function(data) {
+            var results = data.data[0].text;
+            $("#results").empty();
+            for (var i = 0; i < results.length; i++) {
+              $("#results").append("<li>" + results[i] + "</li>");
+            }
+          },
+          error: function() {
+            alert("An error occurred while searching the ChatGPT API.");
+          }
+        });
+        return false;
+      }
+
+      function convertResult() {
+        var fileType = $("#file-type").val();
+        var result = $("#results").text();
+        var blob = new Blob([result], {type: "text/" + fileType});
+        saveAs(blob, "result." + fileType);
+      }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/file-saver/dist/FileSaver.min.js"></script>
+  </body>
+</html>
