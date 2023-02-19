@@ -1,0 +1,35 @@
+`<!DOCTYPE html>
+<html>
+<head>
+	<title>ChatGPT API Demo</title>
+	<style>
+		input[type="submit"] {
+			background-color: #4CAF50;
+			border: none;
+			color: white;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<h1>ChatGPT API Demo</h1>
+	<form action="/convert" method="post">
+		<label for="text">Enter Text:</label><br>
+		<textarea id="text" name="text" rows="10" cols="50"></textarea><br>
+		<label for="format">Select Format:</label><br>
+		<select id="format" name="format">
+			<option value="pdf">PDF</option>
+			<option value="docx">DOCX</option>
+			<option value="txt">TXT</option>
+			<option value="html">HTML</option>
+		</select><br><br>
+		<input type="submit" value="Convert">
+	</form>
+</body>
+</html>
